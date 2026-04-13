@@ -433,9 +433,168 @@
   background: var(--surface-2);
   border-color: var(--border-2);
 }
+/* ── News Ticker LLM (Banderole) ───────────────── */
+
+.news-ticker {
+        background: var(--surface);
+        border: 1px solid var(--border-2);
+        border-radius: var(--r-md);
+        margin-bottom: var(--s10);
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        height: 48px;
+        backdrop-filter: blur(8px);
+        box-shadow: var(--sh-xs);
+      }
+      .news-ticker__label {
+        background: var(--accent);
+        color: white;
+        padding: 0 var(--s5);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        z-index: 2;
+      }
+      .news-ticker__viewport { flex: 1; overflow: hidden; }
+      .news-ticker__content {
+        display: flex;
+        white-space: nowrap;
+        animation: tickerSlide 60s linear infinite;
+        align-items: center;
+      }
+      .news-ticker__content a {
+        color: var(--text-soft);
+        text-decoration: none;
+        font-size: var(--fs-sm);
+        padding-right: 50px;
+        transition: color 0.3s;
+      }
+      .news-ticker__content a:hover { color: var(--accent); text-decoration: underline; }
+      @keyframes tickerSlide {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .news-ticker:hover .news-ticker__content { animation-play-state: paused; }
+
+      /* ── Page de Couverture ───────────────── */
+#cover-page {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 1.2s cubic-bezier(0.85, 0, 0.15, 1), opacity 1s ease;
+}
+
+.cover-content {
+  text-align: center;
+  max-width: 600px;
+  padding: var(--s10);
+}
+
+.cover-kicker {
+  display: block;
+  font-size: var(--fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: var(--s4);
+}
+
+.cover-title {
+  font-family: var(--ff-serif);
+  font-size: clamp(3rem, 10vw, 5rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1;
+  margin-bottom: var(--s4);
+}
+
+.cover-subtitle {
+  font-size: var(--fs-sm);
+  color: var(--text-soft);
+  margin-bottom: var(--s10);
+}
+
+.enter-button {
+  background: none;
+  border: 1px solid var(--border-2);
+  padding: 1rem 2rem;
+  border-radius: 100px;
+  font-family: var(--ff-sans);
+  font-size: var(--fs-2xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.enter-button:hover {
+  border-color: var(--accent);
+  padding-right: 2.5rem;
+}
+
+.enter-button svg {
+  transition: transform 0.4s ease;
+}
+
+.enter-button:hover svg {
+  transform: translateX(5px);
+}
+
+/* État quand on clique */
+.page-entered #cover-page {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+/* Animation d'entrée du texte */
+.reveal-text {
+  animation: fadeUpReveal 1.2s cubic-bezier(0.2, 1, 0.3, 1) both;
+}
+@keyframes fadeUpReveal {
+  from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+.proj-card {
+  position: relative;
+  overflow: hidden;
+}
+.proj-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255, 182, 193, 0.15), transparent 40%);
+  z-index: 0;
+}
   </style>
 </head>
 <body>
+
+<div id="cover-page">
+  <div class="cover-content">
+    <div class="cover-text">
+      <span class="cover-kicker reveal-text">Portfolio 2026</span>
+      <h1 class="cover-title reveal-text">Sarah Akono</h1>
+      <p class="cover-subtitle reveal-text">Développeuse Fullstack & Passionnée d'IA</p>
+    </div>
+    <button id="enter-btn" class="enter-button">
+      <span>Explorer l'univers</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
 
   <div class="progress-bar" id="progressBar" aria-hidden="true"></div>
   <div class="cursor" id="cursor" aria-hidden="true"><div class="cursor__ring" id="cRing"></div><div class="cursor__dot" id="cDot"></div></div>
@@ -642,15 +801,15 @@
             <div>
               <h3 class="tl-title">Consultante en innovation</h3>
               <p class="tl-org">Micropole Levallois <span class="tl-dot" aria-hidden="true"></span> Levallois Perret,France</p>
-              <p class="tl-desc">Intégration de maquettes Figma en composants React réutilisables, participation aux rituels agiles, optimisation des performances et accessibilité WCAG des interfaces.</p>
+              <p class="tl-desc">Intégration de maquettes React réutilisables, participation aux rituels agiles, optimisation des performances et accessibilité  des interfaces.</p>
             </div>
           </article>
           <article class="tl-card" role="listitem">
-            <div class="tl-period">Mars 2021</div>
+            <div class="tl-period">Mars 2022</div>
             <div>
               <h3 class="tl-title">Stage développement web</h3>
               <p class="tl-org">Micropole Levallois <span class="tl-dot" aria-hidden="true"></span> Levallois Perret,France</p>
-              <p class="tl-desc">Refonte de l'interface d'une application SaaS en PHP/Symfony, rédaction de tests unitaires et documentation technique.</p>
+              <p class="tl-desc">Refonte de l'interface d'une application, rédaction de tests unitaires et documentation technique.</p>
             </div>
           </article>
           
@@ -712,8 +871,8 @@
             <p class="proj-card__desc">CV en ligne.</p>
             <div class="proj-card__tags"><span class="tech-tag">HTML</span><span class="tech-tag">CSS</span><span class="tech-tag">JavaScript</span></div>
             <div class="proj-card__links">
-              <a href="#" class="proj-card__link">GitHub <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
-              <a href="#" class="proj-card__link">Live <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="https://github.com/sarah22-a/Portfolio-2026" class="proj-card__link">GitHub <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              <a href="https://sarah22-a.github.io/Portfolio-2026/" class="proj-card__link">Live <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
             </div>
           </article>
 
@@ -751,13 +910,23 @@
 
 
    <!-- ▓▓ VEILLE ▓▓ -->
+    
+
   <section id="watch" aria-labelledby="veille-h">
     <div class="container">
       <header class="section-head">
         <p class="section-kicker">06 — Curiosités</p>
         <h2 class="section-title" id="veille-h">Veille <em>technologique :</em></h2>
       </header>
-
+      <div class="news-ticker reveal" id="llm-ticker" style="display: none;">
+      <div class="news-ticker__label">Live LLM News</div>
+      <div class="news-ticker__viewport">
+        <div class="news-ticker__content" id="ticker-content">
+          <span>Chargement des dernières actualités IA...</span>
+        </div>
+      </div>
+    </div>
+    
       <!-- BARRE DE FILTRES (comme les projets) -->
       <div class="filter-wrap">
         <div class="filter-bar" role="group" aria-label="Filtrer la veille">
@@ -1149,6 +1318,59 @@
 
   counters.forEach(c => observer.observe(c.closest('.stat-item')));
 })();
+async function fetchLLMNews() {
+  const tickerContent = document.getElementById('ticker-content');
+  const tickerContainer = document.getElementById('llm-ticker');
+  
+  // Utilisation d'un flux RSS de Google News sur les LLM converti en JSON
+  const rssUrl = encodeURIComponent('https://news.google.com/rss/search?q=LLM+AI+news&hl=fr&gl=FR&ceid=FR:fr');
+  const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`;
+
+  try {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (data.status === 'ok') {
+      let html = '';
+      // On prend les 10 dernières news
+      data.items.forEach(item => {
+        html += `<a href="${item.link}" target="_blank">✦ ${item.title}</a>`;
+      });
+      
+      // On double le contenu pour l'effet de boucle infinie
+      tickerContent.innerHTML = html + html;
+      tickerContainer.style.display = 'flex';
+    }
+  } catch (error) {
+    console.error("Erreur lors de la récupération des news:", error);
+  }
+}
+
+// Lancer la récupération au chargement
+document.addEventListener('DOMContentLoaded', fetchLLMNews);
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const enterBtn = document.getElementById('enter-btn');
+    const body = document.body;
+
+    // Empêcher le scroll au début
+    body.style.overflow = 'hidden';
+
+    enterBtn.addEventListener('click', () => {
+      // Activer l'animation de sortie
+      body.classList.add('page-entered');
+      
+      // Réactiver le scroll après l'animation
+      setTimeout(() => {
+        body.style.overflow = '';
+        // Optionnel : Déclencher les animations "reveal" du portfolio ici
+        if (window.refreshLLMNews) refreshLLMNews(); 
+      }, 1200);
+    });
+  });
+</script>
+</script>
   </script>
 
 </body>
